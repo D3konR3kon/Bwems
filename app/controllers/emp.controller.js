@@ -20,8 +20,8 @@ const getOneEmp = async(req, res)=>{
 }
 const createEmployee = async (req, res)=>{
     try{
-        const {fname, lname, sex, age, dept, emp_id, email, status, salary, address, start_date, position, contract} = await req.body;
-        const employee = await db.create(fname, lname, sex, age, dept, emp_id, email, status, salary, address, start_date, position, contract)
+        const {fname, lname, sex, age, dept, email, status, salary, address, start_date, position, contract} = await req.body;
+        const employee = await db.create(fname, lname, sex, age, dept, email, status, salary, address, start_date, position, contract)
         console.log(employee)
         res.send(employee)
     }

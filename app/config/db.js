@@ -30,16 +30,16 @@ const getEmployees = async ()=>{
     return rows
 }
 //Get One
-const getOne  =  async(id)=>{
-    const [rows] = await pool.query("SELECT * FROM employees WHERE id = ?",[id])
+const getOne  =  async(emp_id)=>{
+    const [rows] = await pool.query("SELECT * FROM employees WHERE emp_id = ?",[emp_id])
     return rows[0]
 }
-const create = async (fname, lname, sex, age, dept, emp_id, email, status, salary, address, start_date, position, contract) => {
+const create = async (fname, lname, sex, age, dept, email, status, salary, address, start_date, position, contract) => {
     try {
       const [res] = await pool.query(`
-        INSERT INTO employees (fname, lname, sex, age, dept, emp_id, email, status, salary, address, start_date, position, contract)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `, [fname, lname, sex, age, dept, emp_id, email, status, salary, address, start_date, position, contract]);
+        INSERT INTO employees (fname, lname, sex, age, dept, email, status, salary, address, start_date, position, contract)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `, [fname, lname, sex, age, dept, email, status, salary, address, start_date, position, contract]);
   
       const id = res.insertId;
       return getOne(id);
@@ -49,9 +49,9 @@ const create = async (fname, lname, sex, age, dept, emp_id, email, status, salar
     }
   };
 
-const removeOne = async (id)=>{
+const removeOne = async (emp_id)=>{
   try {
-    const [res] = await pool.query("DELETE FROM employees WHERE  ID = ?", [id])
+    const [res] = await pool.query("DELETE FROM employees WHERE  ID = ?", [emp_id])
     
     const res_id = res.insertId;
     return getOne(res_id);
@@ -62,7 +62,7 @@ const removeOne = async (id)=>{
   }
   
 }
-const update = async (id,fname, lname,sex, age, dept, emp_id, email, status, salary, address, start_date, position, contract)=>{
+const update = async (emp_id,fname, lname,sex, age, dept, email, status, salary, address, start_date, position, contract)=>{
   try {
     const [row] = await pool.query(`UPDATE employees
       SET fname=?, lname=?, sex=?, age=?, dept=?, emp_id=?, email=?, status=?, salary=?, address=?, start_date=?, position=?, contract=?
@@ -72,9 +72,9 @@ const update = async (id,fname, lname,sex, age, dept, emp_id, email, status, sal
       const affectedRows = row.affectedRows;
 
       if (affectedRows > 0) {
-        return getOne(id);
+        return getOne(emp_id);
       } else {
-        throw new Error(`Employee with ID ${id} not found.`);
+        throw new Error(`Employee with ID ${emp_id} not found.`);
       }
   } catch (error) {
     console.error('Error updating an employee:', error.message);

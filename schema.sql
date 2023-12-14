@@ -24,7 +24,6 @@ VALUES (
     'Male',
     32,
     'IT',
-    1004,
     'john.doe@example.com',
     'Active',
     50000.00,
