@@ -20,8 +20,8 @@ const getOneEmp = async(req, res)=>{
 }
 const createEmployee = async (req, res)=>{
     try{
-        const {fname, lname, sex, age, dept, email, status, salary, id_number, cell_number,address, start_date, position, contract} = await req.body;
-        const employee = await db.create(fname, lname, sex, age, dept, email, status, salary,id_number, cell_number, address, start_date, position, contract)
+        const {fname, lname, sex, age, email, status, salary, id_number, cell_number, address, start_date, contract, dept_id, pos_id} = await req.body;
+        const employee = await db.create(fname, lname, sex, age, email, status, salary, id_number, cell_number, address, start_date, contract, dept_id, pos_id)
         console.log(employee)
         res.send(employee)
     }
@@ -56,9 +56,9 @@ const updateOne =  async (req, res)=>{
             console.log("Could not modify the employee data")
             return 
         }
-        const {fname, lname, sex, age, dept, email, status, salary, id_number, cell_number, address, start_date, position, contract} = await req.body
+        const {fname, lname, sex, age, email, status, salary, id_number, cell_number, address, start_date, contract, dept_id, pos_id} = await req.body
         console.log(fname)
-        const results = await db.update(fname, lname, sex, age, dept, email, status, salary,id_number, cell_number, address, start_date, position, contract, id)
+        const results = await db.update(fname, lname, sex, age, email, status, salary,id_number, cell_number, address, start_date, contract,dept_id, pos_id, id)
         console.log(results)
         res.status(201).send(results)
     } catch (error) {

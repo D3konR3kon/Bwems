@@ -34,12 +34,12 @@ const getOne  =  async(emp_id)=>{
     const [rows] = await pool.query("SELECT * FROM employees WHERE emp_id = ?",[emp_id])
     return rows[0]
 }
-const create = async (fname, lname, sex, age, dept, email, status, salary,id_number, cell_number, address, start_date, position, contract) => {
+const create = async (fname, lname, sex, age, email, status, salary,id_number, cell_number, address, start_date, contract, dept_id, pos_id) => {
     try {
       const [res] = await pool.query(`
-        INSERT INTO employees (fname, lname, sex, age, dept, email, status, salary, id_number, cell_number, address, start_date, position, contract)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)
-      `, [fname, lname, sex, age, dept, email, status, salary, id_number, cell_number, address, start_date, position, contract]);
+        INSERT INTO employees (fname, lname, sex, age, email, status, salary, id_number, cell_number, address, start_date, contract, dept_id, pos_id)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `, [fname, lname, sex, age, email, status, salary, id_number, cell_number, address, start_date, contract, dept_id, pos_id]);
   
       const id = res.insertId;
       return getOne(id);
@@ -62,12 +62,12 @@ const removeOne = async (emp_id)=>{
   }
   
 }
-const update = async (fname, lname,sex, age, dept, email, status, salary,id_number, cell_number, address, start_date, position, contract,emp_id)=>{
+const update = async (fname, lname,sex, age, email, status, salary,id_number, cell_number, address, start_date, contract, dept_id, pos_id, emp_id)=>{
   try {
     const [row] = await pool.query(`UPDATE employees
-      SET fname=?, lname=?, sex=?, age=?, dept=?, email=?, status=?, salary=?,id_number=?, cell_number=?, address=?, start_date=?, position=?, contract=?
+      SET fname=?, lname=?, sex=?, age=?, email=?, status=?, salary=?,id_number=?, cell_number=?, address=?, start_date=?, contract=?, dept_id=?, pos_id=?
       WHERE emp_id = ?`,
-      [fname, lname, sex, age, dept, email, status, salary,id_number, cell_number, address, start_date, position, contract,emp_id]);
+      [fname, lname, sex, age, email, status, salary,id_number, cell_number, address, start_date, contract,dept_id, pos_id,emp_id]);
     
       const affectedRows = row.affectedRows;
 
