@@ -26,20 +26,33 @@ pool.getConnection((err, connection) => {
 });
 
 const getEmployees = async ()=>{
-    const [rows] = await pool.query("SELECT * FROM employees")
+  const query = `
+  SELECT e.*, d.dept_name, p.position
+  FROM employees e
+   LEFT JOIN department d ON e.dept_id = d.dept_id
+  LEFT JOIN positions p ON e.pos_id = p.pos_id
+  `;
+    const [rows] = await pool.query(query)
     return rows
 }
 //Get One
 const getOne  =  async(emp_id)=>{
-    const [rows] = await pool.query("SELECT * FROM employees WHERE emp_id = ?",[emp_id])
+  const query = `
+  SELECT e.*, d.dept_name, p.position
+  FROM employees e
+  LEFT JOIN department d ON e.dept_id = d.dept_id
+  LEFT JOIN positions p ON e.pos_id = p.pos_id
+  WHERE e.emp_id = ?`;
+    const [rows] = await pool.query(query,[emp_id])
     return rows[0]
 }
 const create = async (fname, lname, sex, age, email, status, salary,id_number, cell_number, address, start_date, contract, dept_id, pos_id) => {
     try {
-      const [res] = await pool.query(`
-        INSERT INTO employees (fname, lname, sex, age, email, status, salary, id_number, cell_number, address, start_date, contract, dept_id, pos_id)
+      const query = `INSERT INTO employees (fname, lname, sex, age, email, status, salary, id_number, cell_number, address, start_date, contract, dept_id, pos_id)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `, [fname, lname, sex, age, email, status, salary, id_number, cell_number, address, start_date, contract, dept_id, pos_id]);
+        
+        `
+      const [res] = await pool.query(query, [fname, lname, sex, age, email, status, salary, id_number, cell_number, address, start_date, contract, dept_id, pos_id]);
   
       const id = res.insertId;
       return getOne(id);
